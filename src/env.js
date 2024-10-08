@@ -1,3 +1,3 @@
  export default  {
-    "SERVER_URL": "https://feel-nine.vercel.app",
+    "SERVER_URL": "https://feel-ixbnwjdte-anonys-projects-fddfe3ba.vercel.app",
 }
