@@ -1,3 +1,3 @@
  export default  {
-    "SERVER_URL": "http://localhost:8800",
+    "SERVER_URL": "https://feel-nine.vercel.app",
 }
