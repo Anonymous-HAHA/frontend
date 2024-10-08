@@ -1,0 +1,110 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+.container {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%; /* Ensure it takes the full width */
+    max-width: 100vw; /* Avoid overflow */
+    background: linear-gradient(135deg, #f0c27b 0%, #4b1248 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto; /* Center the container */
+    transition: background-image 0.6s ease-in-out;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #ffe6e6;
+}
+
+p {
+    font-size: 1.2rem;
+    margin: 0 0 2rem;
+    font-style: italic;
+    margin-top: 10px;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    max-width: 90%; /* Prevent overflow */
+    margin: 0 auto; /* Center the buttons */
+}
+
+.mood-button {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: transform 0.3s;
+    background-color: #ffe6e6;
+    color: #4b1248;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mood-button:hover {
+    transform: scale(1.1);
+}
+
+.quote {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.quote.visible {
+    opacity: 1;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+    p, .quote {
+        font-size: 1rem;
+    }
+    .mood-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 600px) {
+    h1 {
+        font-size: 3rem; /* Adjust as needed */
+    }
+    p, .quote {
+        font-size: 1.5rem; /* Adjust as needed */
+    }
+    .mood-button {
+        padding: 1rem 2rem; /* Larger padding */
+        font-size: 1.2rem; /* Adjust as needed */
+    }
+}

@@ -1,0 +1,44 @@
+.admin-dashboard {
+    padding: 20px;
+    max-width: 800px; /* Limit max width for better readability */
+    margin: auto; /* Center the dashboard */
+  }
+  
+  .input-section {
+    margin-bottom: 20px; /* Add gap between sections */
+  }
+  
+  .textarea, .input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    resize: vertical; /* Allow vertical resizing for textareas */
+  }
+  
+  .message {
+    color: green;
+    margin-top: 10px;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 600px) {
+    .input-section h2 {
+      font-size: 1.5rem; /* Adjust heading size */
+    }
+  
+    .textarea, .input {
+      padding: 8px; /* Slightly reduce padding on smaller screens */
+    }
+  
+    button {
+      padding: 8px 16px; /* Adjust button padding for smaller screens */
+    }
+  }
+  
