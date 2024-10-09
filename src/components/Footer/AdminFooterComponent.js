@@ -2,7 +2,7 @@ import React from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-function FooterComponent() {
+function AdminFooterComponent() {
   const navigate = useNavigate();
 
   const logOut = () => {
@@ -11,34 +11,34 @@ function FooterComponent() {
     navigate("/login", { replace: true });
   };
 
-  const goToHome = () => {
-    navigate("/"); // Navigate to the Home page
+  const goToCreatePoem = () => {
+    navigate("/admin/create/poem"); // Navigate to the Create Poem page
   };
 
-  const goToPoems = () => {
-    navigate("/poems"); // Navigate to the Poems page
+  const goToHome = () => {
+    navigate("/admin"); // Navigate back to Admin Home
   };
 
   return (
-    <footer className="flex justify-around items-center bg-gray-100 p-4 shadow-md">
+    <footer className="flex justify-around items-center bg-gray-100 p-4 shadow-md mt-auto">
       <button
         type="button"
         className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
-        onClick={goToHome} // Navigate to Home on button click
+        onClick={goToHome} // Navigate on button click
       >
         Home
       </button>
       <button
         type="button"
         className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
-        onClick={goToPoems} // Navigate to Poems on button click
+        onClick={goToCreatePoem} // Navigate on button click
       >
-        Poems
+        Create Poem
       </button>
       <button
         type="button"
         className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
-        onClick={logOut} // Logout on button click
+        onClick={logOut}
       >
         Sign out
       </button>
@@ -46,4 +46,4 @@ function FooterComponent() {
   );
 }
 
-export default FooterComponent;
+export default AdminFooterComponent;
