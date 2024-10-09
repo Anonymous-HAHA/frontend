@@ -9,7 +9,7 @@ const LandingPage = () => {
   const [quote, setQuote] = useState("");
   const [name, setName] = useState("");
   const [dailyQuote, setDailyQuote] = useState("Loading your daily quote...");
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(""); 
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,8 @@ const LandingPage = () => {
         });
         setDailyQuote(response.data);
       } catch (err) {
-        setError("Error loading daily quote");
+        // setError("Error loading daily quote");
+        console.log("Error loading daily quote");
       }
     };
     fetchDailyQuote();
@@ -36,7 +37,8 @@ const LandingPage = () => {
           });
           setName(response.data);
         } catch (err) {
-          setError("Error loading name");
+          // setError("Error loading name");
+          console.log("Error loading name");
         }
       };
       fetchName();
@@ -44,7 +46,7 @@ const LandingPage = () => {
 
   // Function to fetch random quote based on mood
   const fetchQuote = async (selectedMood) => {
-    setError(null);
+    // setError(null);
     setLoading(true);
     try {
       const bearer = "Bearer " + Cookies.get("jwtToken");
@@ -55,7 +57,8 @@ const LandingPage = () => {
       setQuote(text);
       setBackgroundImage(image || ""); // Ensure image is either a valid URL or empty
     } catch (err) {
-      setError("Error fetching quote");
+      // setError("Error fetching quote");
+      console.log("Error fetching quote");
     } finally {
       setLoading(false);
     }
