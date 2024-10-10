@@ -1,6 +1,10 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { IoSettings } from "react-icons/io5";
+import { GiBookCover } from "react-icons/gi";
+import { RiLogoutBoxRFill } from "react-icons/ri";
+import { FaHome } from "react-icons/fa";
 
 function AdminFooterComponent() {
   const navigate = useNavigate();
@@ -26,21 +30,22 @@ function AdminFooterComponent() {
         className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
         onClick={goToHome} // Navigate on button click
       >
-        Home
+       <FaHome className="text-2xl mb-1" />
+       
       </button>
       <button
         type="button"
         className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
         onClick={goToCreatePoem} // Navigate on button click
       >
-        Create Poem
+       <GiBookCover className="text-2xl mb-1" />
       </button>
       <button
         type="button"
         className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
         onClick={logOut}
       >
-        Sign out
+      <RiLogoutBoxRFill className="text-2xl mb-1" />
       </button>
     </footer>
   );

@@ -35,7 +35,7 @@ function FooterComponent() {
         onClick={goToHome}
       >
         <FaHome className="text-2xl mb-1" />
-        Home
+      
       </button>
       <button
         type="button"
@@ -43,7 +43,7 @@ function FooterComponent() {
         onClick={goToPoems}
       >
         <GiBookCover className="text-2xl mb-1" />
-        Poems
+   
       </button>
       <button
         type="button"
@@ -51,7 +51,7 @@ function FooterComponent() {
         onClick={goToSettings}
       >
         <IoSettings className="text-2xl mb-1" />
-        Settings
+      
       </button>
       <button
         type="button"
@@ -59,7 +59,7 @@ function FooterComponent() {
         onClick={logOut}
       >
         <RiLogoutBoxRFill className="text-2xl mb-1" />
-        Sign out
+       
       </button>
     </footer>
   );
