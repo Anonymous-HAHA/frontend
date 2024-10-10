@@ -12,6 +12,7 @@ import LandingPage from "./components/Homepage/LandingPage";
 import AdminDashboard from "./components/Admindashboard/AdminDashboard";
 import CreatePoem from "./components/Poems/CreatePoem";
 import Poems from "./components/Poems/Poems";
+import UserSettings from "./components/Settings/UserSettings";
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />}>
             <Route index element={<LandingPage />} />
             <Route path="poems" element={<Poems />} />
+            <Route path="settings" element={<UserSettings />} />
 
           </Route>
         </Route>

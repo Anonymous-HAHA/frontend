@@ -28,40 +28,58 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
-  const updateDailyQuote = () => handleRequest(async () => {
-    const bearer = "Bearer " + Cookies.get("jwtToken");
-    const response = await axios.post(
-      `${env.SERVER_URL}/edit/todaysquote`,
-      { quote: dailyQuote },
-      { headers: { Authorization: bearer } }
-    );
-    setMessage(response.data);
-  });
+  const updateDailyQuote = () => {
+    if (!dailyQuote) {
+      setError("Daily quote is required");
+      return;
+    }
+    handleRequest(async () => {
+      const bearer = "Bearer " + Cookies.get("jwtToken");
+      const response = await axios.post(
+        `${env.SERVER_URL}/edit/todaysquote`,
+        { quote: dailyQuote },
+        { headers: { Authorization: bearer } }
+      );
+      setMessage(response.data);
+    });
+  };
 
-  const addName = () => handleRequest(async () => {
-    const bearer = "Bearer " + Cookies.get("jwtToken");
-    const response = await axios.post(
-      `${env.SERVER_URL}/add/name`,
-      { name, username }, // Include username
-      { headers: { Authorization: bearer } }
-    );
-    setMessage(response.data);
-    setName("");
-    setUsername("");
-  });
+  const addName = () => {
+    if (!name || !username) {
+      setError("Both name and username are required");
+      return;
+    }
+    handleRequest(async () => {
+      const bearer = "Bearer " + Cookies.get("jwtToken");
+      const response = await axios.post(
+        `${env.SERVER_URL}/add/name`,
+        { name, username },
+        { headers: { Authorization: bearer } }
+      );
+      setMessage(response.data);
+      setName("");
+      setUsername("");
+    });
+  };
 
-  const addNewQuote = () => handleRequest(async () => {
-    const bearer = "Bearer " + Cookies.get("jwtToken");
-    const response = await axios.post(
-      `${env.SERVER_URL}/add/quote`,
-      { mood, quote: { text: quoteText, image: quoteImage } },
-      { headers: { Authorization: bearer } }
-    );
-    setMessage(response.data.message);
-    setMood("");
-    setQuoteText("");
-    setQuoteImage("");
-  });
+  const addNewQuote = () => {
+    if (!mood || !quoteText || !quoteImage) {
+      setError("Mood, quote text, and quote image URL are required");
+      return;
+    }
+    handleRequest(async () => {
+      const bearer = "Bearer " + Cookies.get("jwtToken");
+      const response = await axios.post(
+        `${env.SERVER_URL}/add/quote`,
+        { mood, quote: { text: quoteText, image: quoteImage } },
+        { headers: { Authorization: bearer } }
+      );
+      setMessage(response.data.message);
+      setMood("");
+      setQuoteText("");
+      setQuoteImage("");
+    });
+  };
 
   return (
     <div className="admin-dashboard">
@@ -75,6 +93,7 @@ const AdminDashboard = () => {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter username"
           className="input"
+          required
         />
         <textarea
           value={name}
@@ -82,6 +101,7 @@ const AdminDashboard = () => {
           placeholder="Enter the name"
           rows="2"
           className="textarea"
+          required
         />
         <button onClick={addName} style={buttonStyle} disabled={loading}>
           Add Name
@@ -96,6 +116,7 @@ const AdminDashboard = () => {
           placeholder="Enter the daily quote"
           rows="4"
           className="textarea"
+          required
         />
         <button onClick={updateDailyQuote} style={buttonStyle} disabled={loading}>
           Update Daily Quote
@@ -110,6 +131,7 @@ const AdminDashboard = () => {
           onChange={(e) => setMood(e.target.value)}
           placeholder="Enter mood (happy, sad, etc.)"
           className="input"
+          required
         />
         <textarea
           value={quoteText}
@@ -117,6 +139,7 @@ const AdminDashboard = () => {
           placeholder="Enter the quote text"
           rows="4"
           className="textarea"
+          required
         />
         <input
           type="text"
@@ -124,6 +147,7 @@ const AdminDashboard = () => {
           onChange={(e) => setQuoteImage(e.target.value)}
           placeholder="Enter the quote image URL"
           className="input"
+          required
         />
         <button onClick={addNewQuote} style={buttonStyle} disabled={loading}>
           Add New Quote
