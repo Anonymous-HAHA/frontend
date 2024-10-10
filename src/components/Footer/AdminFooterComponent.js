@@ -27,25 +27,24 @@ function AdminFooterComponent() {
     <footer className="flex justify-around items-center bg-gray-100 p-4 shadow-md mt-auto">
       <button
         type="button"
-        className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
+        className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold transition duration-200 ease-in-out"
         onClick={goToHome} // Navigate on button click
       >
-       <FaHome className="text-2xl mb-1" />
-       
+        <FaHome className="text-2xl mb-1" />
       </button>
       <button
         type="button"
-        className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
+        className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold transition duration-200 ease-in-out"
         onClick={goToCreatePoem} // Navigate on button click
       >
-       <GiBookCover className="text-2xl mb-1" />
+        <GiBookCover className="text-2xl mb-1" />
       </button>
       <button
         type="button"
-        className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold"
+        className="w-1/3 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold transition duration-200 ease-in-out"
         onClick={logOut}
       >
-      <RiLogoutBoxRFill className="text-2xl mb-1" />
+        <RiLogoutBoxRFill className="text-2xl mb-1" />
       </button>
     </footer>
   );
