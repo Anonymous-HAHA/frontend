@@ -1,69 +1,67 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import env from "../../env"; // Adjust this import as necessary
+import ClipLoader from "react-spinners/ClipLoader";
+import env from "../../env";
 import './Style.css';
 
 const AdminDashboard = () => {
   const [dailyQuote, setDailyQuote] = useState("");
   const [name, setName] = useState("");
+  const [username, setUsername] = useState(""); // New username state
   const [mood, setMood] = useState("");
   const [quoteText, setQuoteText] = useState("");
   const [quoteImage, setQuoteImage] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loader state
 
-  // Function to update daily quote
-  const updateDailyQuote = async () => {
+  const handleRequest = async (requestFn) => {
+    setLoading(true);
+    setError("");
+    setMessage("");
     try {
-      const bearer = "Bearer " + Cookies.get("jwtToken");
-      const response = await axios.post(
-        `${env.SERVER_URL}/edit/todaysquote`,
-        { quote: dailyQuote },
-        { headers: { Authorization: bearer } }
-      );
-      setMessage(response.data);
-      setError("");
+      await requestFn();
     } catch (err) {
-      setError("Error updating daily quote: " + err.message);
+      setError(err.response?.data?.message || err.message || "Something went wrong");
     }
+    setLoading(false);
   };
 
-  const addName = async () => {
-    try {
-      const bearer = "Bearer " + Cookies.get("jwtToken");
-      const response = await axios.post(
-        `${env.SERVER_URL}/add/name`,
-        { name: name },
-        { headers: { Authorization: bearer } }
-      );
-      setMessage(response.data);
-      setError("");
-      setName("");
-    } catch (err) {
-      setError("Error updating daily quote: " + err.message);
-    }
-  };
+  const updateDailyQuote = () => handleRequest(async () => {
+    const bearer = "Bearer " + Cookies.get("jwtToken");
+    const response = await axios.post(
+      `${env.SERVER_URL}/edit/todaysquote`,
+      { quote: dailyQuote },
+      { headers: { Authorization: bearer } }
+    );
+    setMessage(response.data);
+  });
 
-  // Function to add a new quote
-  const addNewQuote = async () => {
-    try {
-      const bearer = "Bearer " + Cookies.get("jwtToken");
-      const response = await axios.post(
-        `${env.SERVER_URL}/add/quote`,
-        { mood, quote: { text: quoteText, image: quoteImage } },
-        { headers: { Authorization: bearer } }
-      );
-      setMessage(response.data.message);
-      setError("");
-      // Clear input fields after successful addition
-      setMood("");
-      setQuoteText("");
-      setQuoteImage("");
-    } catch (err) {
-      setError("Error adding new quote: " + err.message);
-    }
-  };
+  const addName = () => handleRequest(async () => {
+    const bearer = "Bearer " + Cookies.get("jwtToken");
+    const response = await axios.post(
+      `${env.SERVER_URL}/add/name`,
+      { name, username }, // Include username
+      { headers: { Authorization: bearer } }
+    );
+    setMessage(response.data);
+    setName("");
+    setUsername("");
+  });
+
+  const addNewQuote = () => handleRequest(async () => {
+    const bearer = "Bearer " + Cookies.get("jwtToken");
+    const response = await axios.post(
+      `${env.SERVER_URL}/add/quote`,
+      { mood, quote: { text: quoteText, image: quoteImage } },
+      { headers: { Authorization: bearer } }
+    );
+    setMessage(response.data.message);
+    setMood("");
+    setQuoteText("");
+    setQuoteImage("");
+  });
 
   return (
     <div className="admin-dashboard">
@@ -71,6 +69,13 @@ const AdminDashboard = () => {
 
       <div className="input-section">
         <h2>Add Name</h2>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter username"
+          className="input"
+        />
         <textarea
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -78,7 +83,7 @@ const AdminDashboard = () => {
           rows="2"
           className="textarea"
         />
-        <button onClick={addName} style={buttonStyle}>
+        <button onClick={addName} style={buttonStyle} disabled={loading}>
           Add Name
         </button>
       </div>
@@ -92,7 +97,7 @@ const AdminDashboard = () => {
           rows="4"
           className="textarea"
         />
-        <button onClick={updateDailyQuote} style={buttonStyle}>
+        <button onClick={updateDailyQuote} style={buttonStyle} disabled={loading}>
           Update Daily Quote
         </button>
       </div>
@@ -120,18 +125,23 @@ const AdminDashboard = () => {
           placeholder="Enter the quote image URL"
           className="input"
         />
-        <button onClick={addNewQuote} style={buttonStyle}>
+        <button onClick={addNewQuote} style={buttonStyle} disabled={loading}>
           Add New Quote
         </button>
       </div>
 
+      {loading && (
+        <div className="flex justify-center items-center mt-4">
+          <ClipLoader color="#4b1248" loading={loading} size={35} />
+        </div>
+      )}
+      
       {message && <p className="message">{message}</p>}
       {error && <p className="error">{error}</p>}
     </div>
   );
 };
 
-// Styles for the buttons and input fields
 const buttonStyle = {
   backgroundColor: "#4b1248",
   color: "#fff",
