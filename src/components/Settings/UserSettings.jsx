@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ClipLoader } from "react-spinners";
-import env from "../env";
+import env from "../../env";
 
 const UserSettings = () => {
   const [oldPassword, setOldPassword] = useState("");
