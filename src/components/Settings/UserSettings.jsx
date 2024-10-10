@@ -37,7 +37,8 @@ const UserSettings = () => {
       setNewPassword("");
       setRetypePassword("");
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Something went wrong");
+        // console.log(err);
+      setError(err.response.data || "Something went wrong");
     }
     setLoading(false);
   };
