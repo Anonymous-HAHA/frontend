@@ -13,6 +13,8 @@ import AdminDashboard from "./components/Admindashboard/AdminDashboard";
 import CreatePoem from "./components/Poems/CreatePoem";
 import Poems from "./components/Poems/Poems";
 import UserSettings from "./components/Settings/UserSettings";
+import AllSounds from "./components/Sound/AllSounds";
+import CreateSound from "./components/Sound/CreateSound";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +25,7 @@ function App() {
             <Route index element={<LandingPage />} />
             <Route path="poems" element={<Poems />} />
             <Route path="settings" element={<UserSettings />} />
+            <Route path="sounds" element={<AllSounds />} />
 
           </Route>
         </Route>
@@ -31,6 +34,7 @@ function App() {
           <Route path="/admin" element={<AdminHome />}>
             <Route index element={<AdminDashboard />} />
             <Route path="create/poem" element={<CreatePoem />} />
+            <Route path="create/sound" element={<CreateSound />} />
           </Route>
         </Route>
       </Routes>
