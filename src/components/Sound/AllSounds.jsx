@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaPlayCircle } from "react-icons/fa";
+import { MdModeEditOutline } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
 import { Dialog } from "@headlessui/react";
 import Cookies from 'js-cookie';
@@ -11,7 +12,10 @@ const AllSounds = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSound, setCurrentSound] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSoundsLoading, setIsSoundsLoading] = useState(true); // New loading state
+  const [isSoundsLoading, setIsSoundsLoading] = useState(true);
+  const [editingTitle, setEditingTitle] = useState(null);
+  const [newTitle, setNewTitle] = useState('');
+  const [isSaveLoading, setIsSaveLoading] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get('jwtToken');
@@ -22,7 +26,7 @@ const AllSounds = () => {
       }
 
       try {
-        setIsSoundsLoading(true); // Set loading state to true before fetching
+        setIsSoundsLoading(true);
         const response = await axios.get(`${env.SERVER_URL}/get/sounds`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -32,7 +36,7 @@ const AllSounds = () => {
       } catch (error) {
         console.error("Error fetching sounds:", error);
       } finally {
-        setIsSoundsLoading(false); // Set loading state to false after fetching
+        setIsSoundsLoading(false);
       }
     };
     fetchSounds();
@@ -56,6 +60,43 @@ const AllSounds = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleEditTitle = (soundId, currentTitle) => {
+    setEditingTitle(soundId);
+    setNewTitle(currentTitle);
+  };
+
+  const handleTitleChange = async (soundId) => {
+    if (!newTitle.trim()) {
+      alert("Title cannot be empty");
+      return;
+    }
+
+    setIsSaveLoading(true);
+
+    try {
+      await axios.put(`${env.SERVER_URL}/change/sound/title/${soundId}`, { title: newTitle }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('jwtToken')}`
+        }
+      });
+
+      setSounds(prevSounds => prevSounds.map(sound => 
+        sound._id === soundId ? { ...sound, name: newTitle } : sound
+      ));
+
+      setEditingTitle(null);
+    } catch (error) {
+      console.error("Error updating title:", error);
+    } finally {
+      setIsSaveLoading(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingTitle(null);
+    setNewTitle('');
   };
 
   const closeModal = () => {
@@ -90,41 +131,126 @@ const AllSounds = () => {
           Voice Recordings
         </h1>
 
-        {isSoundsLoading ? ( // Show loading spinner while fetching sounds
+        {isSoundsLoading ? (
           <ClipLoader color="#000" loading={isSoundsLoading} size={50} />
         ) : sounds.length === 0 ? (
-          <p style={{
-            color: '#64748b',
-            fontSize: '1.25rem'
-          }}>No voice messages yet</p>
+          <p style={{ color: '#64748b', fontSize: '1.25rem' }}>No voice messages yet</p>
         ) : (
           <div style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '1rem',
-            alignItems: 'center'
+            alignItems: 'center',
+            width: '100%',
           }}>
             {sounds.map((sound) => (
-              <button
-                key={sound._id}
-                onClick={() => handlePlaySound(sound._id)}
-                style={{
+              <div key={sound._id} style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: '#000',
+                color: '#fff',
+                padding: '0.75rem 1.25rem',
+                borderRadius: '0.5rem',
+                width: '100%',
+                maxWidth: '600px',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                flexDirection: 'column', // Stack on mobile
+              }}>
+                <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem',
-                  backgroundColor: '#000',
-                  color: '#fff',
-                  padding: '0.75rem 1.25rem',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '1.25rem',
-                  transition: 'background-color 0.3s'
-                }}
-              >
-                <FaPlayCircle size={24} />
-                <span>{sound.name}</span>
-              </button>
+                  justifyContent: 'space-between',
+                  width: '100%'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    flexGrow: 1
+                  }}>
+                    <FaPlayCircle size={24} onClick={() => handlePlaySound(sound._id)} style={{ cursor: 'pointer' }} />
+                    <span onClick={() => handlePlaySound(sound._id)} style={{ cursor: 'pointer' }}>
+                      {sound.name}
+                    </span>
+                  </div>
+                  <button 
+                    onClick={() => handleEditTitle(sound._id, sound.name)}
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: '#fff',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <MdModeEditOutline size={24} />
+                  </button>
+                </div>
+                
+                {editingTitle === sound._id && (
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                    marginTop: '0.5rem'
+                  }}>
+                    <input 
+                      type="text"
+                      value={newTitle}
+                      required
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      style={{
+                        width: '90%',
+                        padding: '0.5rem',
+                        borderRadius: '0.25rem',
+                        marginBottom: '0.5rem',
+                        border: '1px solid #ccc',
+                        color : '#000'
+                      }}
+                    />
+                    <div style={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      justifyContent: 'center',
+                      width: '100%'
+                    }}>
+                      <button 
+                        onClick={() => handleTitleChange(sound._id)}
+                        disabled={!newTitle.trim() || newTitle === sound.name || isSaveLoading}
+                        style={{
+                          backgroundColor: !newTitle.trim() || newTitle === sound.name ? '#999' : '#4caf50',
+                          color: '#fff',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '0.25rem',
+                          fontSize: '0.9rem',
+                          cursor: (!newTitle.trim() || newTitle === sound.name || isSaveLoading) ? 'not-allowed' : 'pointer',
+                          width: '45%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {isSaveLoading ? <ClipLoader color="#fff" size={16} /> : 'Save'}
+                      </button>
+                      <button 
+                        onClick={handleCancelEdit}
+                        style={{
+                          backgroundColor: '#ef4444',
+                          color: '#fff',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '0.25rem',
+                          fontSize: '0.9rem',
+                          cursor: 'pointer',
+                          width: '45%'
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         )}
@@ -150,22 +276,25 @@ const AllSounds = () => {
               width: '100%',
               maxWidth: '500px'
             }}>
-              <div style={{
-                padding: '1.5rem',
-              }}>
+              <div style={{ padding: '1.5rem' }}>
                 <h3 style={{
                   fontSize: '1.25rem',
                   fontWeight: '500',
-                  color: '#334155',
                   marginBottom: '1rem'
-                }}>Playing Sound</h3>
+                }}>
+                  Voice Recording
+                </h3>
                 {isLoading ? (
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100px'
+                  }}>
                     <ClipLoader color="#000" loading={isLoading} size={50} />
                   </div>
-                ) : (
-                  currentSound && (
-                    <audio controls style={{
+                ) : ( currentSound && (
+                    <audio controls  style={{
                       width: '100%',
                       marginTop: '1rem'
                     }}>
