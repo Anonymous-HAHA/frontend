@@ -13,6 +13,15 @@ const LandingPage = () => {
   const [backgroundImage, setBackgroundImage] = useState(""); 
   const [loading, setLoading] = useState(false);
 
+  // Mood mapping with capitalized keys
+  const moodMapping = {
+    "Happy😊": "happy",
+    "Sad😞": "sad",
+    "Angry😤": "angry",
+    "Frustrated🤦‍♀️": "frustrated",
+    "Demotivated😩": "demotivated"
+  };
+
   // Fetch daily quote on page load
   useEffect(() => {
     const fetchDailyQuote = async () => {
@@ -29,17 +38,17 @@ const LandingPage = () => {
     fetchDailyQuote();
 
     const fetchName = async () => {
-        try {
-          const bearer = "Bearer " + Cookies.get("jwtToken");
-          const response = await axios.get(`${env.SERVER_URL}/get/name`, {
-            headers: { Authorization: bearer }
-          });
-          setName(response.data);
-        } catch (err) {
-          setError("Error loading name");
-        }
-      };
-      fetchName();
+      try {
+        const bearer = "Bearer " + Cookies.get("jwtToken");
+        const response = await axios.get(`${env.SERVER_URL}/get/name`, {
+          headers: { Authorization: bearer }
+        });
+        setName(response.data);
+      } catch (err) {
+        setError("Error loading name");
+      }
+    };
+    fetchName();
   }, []);
 
   // Function to fetch random quote based on mood
@@ -48,7 +57,8 @@ const LandingPage = () => {
     setLoading(true);
     try {
       const bearer = "Bearer " + Cookies.get("jwtToken");
-      const response = await axios.get(`${env.SERVER_URL}/get/quotes/random?mood=${selectedMood}`, {
+      const moodText = moodMapping[selectedMood]; // Get plain text mood
+      const response = await axios.get(`${env.SERVER_URL}/get/quotes/random?mood=${moodText}`, {
         headers: { Authorization: bearer }
       });
       const { text, image } = response.data;
@@ -68,7 +78,7 @@ const LandingPage = () => {
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
       }}
     >
-      <h1>For You, My Wonderful Friend,{name}</h1>
+      <h1>For You, My Wonderful Friend, {name}</h1>
       <p style={{ fontSize: "1.5rem", color: "#ffe6e6" }}>
         {dailyQuote}
       </p>
@@ -76,13 +86,13 @@ const LandingPage = () => {
         Thank you for always being there. Pick how you’re feeling and let me try to make your day a little brighter.
       </p>
       <div className="buttons">
-        {["happy😊", "sad😞", "angry😤", "frustrated🤦‍♀️", "demotivated😩"].map((mood) => (
+        {Object.keys(moodMapping).map((mood) => (
           <button 
             key={mood} 
             className="mood-button" 
             onClick={() => fetchQuote(mood)}
           >
-            {mood.charAt(0).toUpperCase() + mood.slice(1)} 
+            {mood} 
           </button>
         ))}
       </div>
