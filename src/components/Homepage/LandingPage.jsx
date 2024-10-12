@@ -76,13 +76,13 @@ const LandingPage = () => {
         Thank you for always being there. Pick how you’re feeling and let me try to make your day a little brighter.
       </p>
       <div className="buttons">
-        {["happy", "sad", "angry", "frustrated", "demotivated"].map((mood) => (
+        {["happy😊", "sad😞", "angry😤", "frustrated🤦‍♀️", "demotivated😩"].map((mood) => (
           <button 
             key={mood} 
             className="mood-button" 
             onClick={() => fetchQuote(mood)}
           >
-            {mood.charAt(0).toUpperCase() + mood.slice(1)} 😊
+            {mood.charAt(0).toUpperCase() + mood.slice(1)} 
           </button>
         ))}
       </div>
