@@ -165,7 +165,7 @@ const AllSounds = () => {
                   </div>
                 ) : (
                   currentSound && (
-                    <audio controls autoPlay style={{
+                    <audio controls style={{
                       width: '100%',
                       marginTop: '1rem'
                     }}>
