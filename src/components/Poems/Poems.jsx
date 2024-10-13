@@ -42,7 +42,7 @@ const Poems = () => {
   }
 
   return (
-    <div className="overflow-hidden max-h-96 relative p-4"> {/* Add padding to the container */}
+    <div className="overflow-y-auto max-h-96 relative p-4"> 
       {error && <div className="text-red-500">{error}</div>}
       {poems.length === 0 ? (
         <div className="text-center py-4">No poems yet.</div>
