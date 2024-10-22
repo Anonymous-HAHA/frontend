@@ -6,6 +6,7 @@ import { GiBookCover } from "react-icons/gi"; // Book cover icon
 import { RiLogoutBoxRFill } from "react-icons/ri"; // Logout icon
 import { FaHome } from "react-icons/fa"; // Home icon
 import { MdOutlineBrush } from "react-icons/md"; // Drawing icon
+import { HiOutlineBell } from "react-icons/hi"; // Notification icon
 
 function AdminFooterComponent() {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ function AdminFooterComponent() {
 
   const goToDrawings = () => {
     navigate("/admin/draw"); // Navigate to Drawings page
+  };
+
+  const goToNotifications = () => {
+    navigate("/admin/send/notification"); // Navigate to Send Notification page
   };
 
   return (
@@ -61,6 +66,13 @@ function AdminFooterComponent() {
         onClick={goToDrawings} // Navigate to Drawings page
       >
         <MdOutlineBrush className="text-2xl mb-1" /> {/* Drawing icon */}
+      </button>
+      <button
+        type="button"
+        className="w-1/5 text-center px-4 py-2 hover:bg-gray-300 rounded-md font-bold transition duration-200 ease-in-out"
+        onClick={goToNotifications} // Navigate to Send Notification page
+      >
+        <HiOutlineBell className="text-2xl mb-1" /> {/* Notification icon */}
       </button>
       <button
         type="button"
