@@ -41,7 +41,7 @@ if ('serviceWorker' in navigator) {
   function showNotification(title, body) {
     new Notification(title, {
       body: body,
-      // icon: '/deep.jpeg', 
+      icon: '../public/deep.jpeg', 
       tag: 'new-notification' // Optional: Tag to manage notification stacking
     });
   }
