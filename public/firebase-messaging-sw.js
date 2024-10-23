@@ -21,7 +21,7 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
-        icon: 'deep.jpeg' // Your icon path here
+        icon: 'https://frontend-ten-pi-46.vercel.app/deep.jpeg' 
     };
 
     self.registration.showNotification(notificationTitle, notificationOptions);
