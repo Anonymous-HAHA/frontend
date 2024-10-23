@@ -14,7 +14,7 @@ function AdminFooterComponent() {
   const logOut = () => {
     Cookies.remove("jwtToken");
     Cookies.remove("role");
-    Cookies.remove("fcmToken");
+    // Cookies.remove("fcmToken");
     console.log("Logged out");
     navigate("/login", { replace: true });
   };
