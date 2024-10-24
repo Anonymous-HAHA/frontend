@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import FooterComponent from './Footer/FooterComponent';
 import { Outlet } from 'react-router-dom';
+import { getToken, messaging } from '../firebase';
+import axios from 'axios';
+import env from '../env'; 
 
 function Home() {
   useEffect(() => {
