@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { getToken, messaging } from '../firebase';
 import axios from 'axios';
 import env from '../env'; 
+import Cookies from "js-cookie";
 
 function Home() {
   useEffect(() => {
