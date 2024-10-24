@@ -5,16 +5,6 @@ import App from './App';
 import { onMessage } from "firebase/messaging";
 import { messaging } from './firebase.js'; // Import your messaging configuration
 
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then((registration) => {
-      console.log('Service Worker registered with scope:', registration.scope);
-    }).catch((error) => {
-      console.error('Service Worker registration failed:', error);
-    });
-}
-
 onMessage(messaging, (payload) => {
   console.log('Message received in foreground: ', payload);
 

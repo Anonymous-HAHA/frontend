@@ -10,6 +10,28 @@ import env from '../env';
 function Home() {
   useEffect(() => {
     const jwtToken = Cookies.get('jwtToken');
+    
+      const registerServiceWorker = async () => {
+        if ('serviceWorker' in navigator) {
+          // Check if the service worker is already registered
+          const registration = await navigator.serviceWorker.getRegistration();
+          
+          if (!registration) {
+            // Register only if not already registered
+            try {
+              const newRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+              console.log('Service Worker registered with scope:', newRegistration.scope);
+            } catch (error) {
+              console.error('Service Worker registration failed:', error);
+            }
+          } else {
+            console.log('Service Worker already registered:', registration.scope);
+          }
+        }
+      };
+  
+      registerServiceWorker(); 
+
     const requestPermission = async () => {
       try {
         const permission = await Notification.requestPermission();
