@@ -15,7 +15,7 @@ function Home() {
         try {
           const permission = await Notification.requestPermission();
           if (permission === 'granted') {
-            const token = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY' });
+            const token = await getToken(messaging, { vapidKey: 'BAswP1DQ5HVO0qvdtoT86skND8GeBt7O1wy6mN2xsi9KAxedE49Bvh0Hmzz2Ddu71OwqXoDDhGOpcUpwdXHjdwI' });
             if (token) {
               Cookies.set('fcmToken', token, { expires: 7 });
               await registerToken(token);
