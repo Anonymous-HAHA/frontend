@@ -9,6 +9,7 @@ import env from '../env';
 
 function Home() {
   useEffect(() => {
+    const jwtToken = Cookies.get('jwtToken');
     const requestPermission = async () => {
       try {
         const permission = await Notification.requestPermission();
