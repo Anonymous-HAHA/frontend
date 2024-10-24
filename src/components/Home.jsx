@@ -4,6 +4,43 @@ import { Outlet } from 'react-router-dom';
 
 function Home() {
   useEffect(() => {
+
+    const fcmToken = Cookies.get('fcmToken');
+    if (!fcmToken) {
+      const requestPermission = async () => {
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            const token = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY' });
+            if (token) {
+              Cookies.set('fcmToken', token, { expires: 7 });
+              await registerToken(token);
+            }
+          } else {
+            console.error('Notification permission denied.');
+          }
+        } catch (error) {
+          console.error('Error getting FCM token:', error);
+        }
+      };
+
+      const registerToken = async (token) => {
+        const jwtToken = Cookies.get('jwtToken');
+        try {
+          await axios.post(`${env.SERVER_URL}/register/token`, { fcmToken: token }, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          });
+          console.log('FCM token registered successfully');
+        } catch (error) {
+          console.error('Error registering FCM token:', error);
+        }
+      };
+
+      requestPermission();
+    }
+
     // Function to check and register the service worker
     const registerServiceWorker = async () => {
       if ('serviceWorker' in navigator) {
